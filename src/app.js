@@ -39,14 +39,14 @@ if (recognition) {
 
         // add image
         let img = document.createElement('img');
-        img.style.height = '400px';
+        img.style.height = '300px';
         img.src =
           'https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExZHFzMDFwdzh4dHYyMWEweHAwenE4Ym5pNGtodjhnbnpld3ZqendoeSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/VseXvvxwowwCc/giphy.gif';
         resultElement.prepend(img);
         const imageUrl =
           'https://image.pollinations.ai/prompt/' +
           encodeURIComponent(resultText) +
-          '?model=flux&width=600&height=450&seed=42&nologo=true';
+          '?model=flux&width=400&height=300&seed=42&nologo=true';
         img.src = imageUrl;
 
         isLoadingImage = false;
