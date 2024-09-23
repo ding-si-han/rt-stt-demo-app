@@ -16,14 +16,7 @@
 }
 
 body {
-  background: radial-gradient(
-      circle at 100%,
-      rgba(3, 6, 21, 0.9) 15%,
-      rgba(189, 205, 226, 0.5) 5%,
-      rgba(7, 9, 22, 0.9) 15%
-    ),
-    url('./public/chevron.png') center/cover;
-
+  background: black;
   height: 100vh;
   padding: 40px 0;
 }
@@ -89,8 +82,11 @@ button > svg {
 }
 
 .result {
-  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
+  font-size: 2rem;
   min-height: 200px;
   padding: 10px;
   border-radius: 3px;
@@ -110,7 +106,7 @@ button > svg {
 @media screen and (min-width: 768px) {
   h1 {
     font-size: 3.125rem;
-    text-transform: capitalize;
+    text-transform: lowercase;
   }
 
   .container {
