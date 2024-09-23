@@ -1,3 +1,23 @@
+import OpenAI from 'openai';
+
+let isLoadingImage = false;
+
+// TODO: Guard this so that people cannot take our API key
+const openai = new OpenAI({
+  apiKey: API_KEY,
+  dangerouslyAllowBrowser: true,
+});
+
+async function generateImage(prompt) {
+  const image = await openai.images.generate({
+    model: 'dall-e-3',
+    prompt: 'real photo of ' + prompt,
+  });
+
+  console.log(image.data);
+  return image.data[0];
+}
+
 const resultElement = document.getElementById('result');
 const startBtn = document.getElementById('startBtn');
 const animatedSvg = startBtn.querySelector('svg');
@@ -22,13 +42,30 @@ if (recognition) {
     console.log('Recording started');
   };
 
-  recognition.onresult = function (event) {
+  recognition.onresult = async function (event) {
     let result = '';
 
     for (let i = event.resultIndex; i < event.results.length; i++) {
-      if (event.results[i].isFinal) {
+      const resultText = event.results[i][0].transcript;
+      if (event.results[i].isFinal && resultText && !isLoadingImage) {
+        isLoadingImage = true;
         resultElement.prepend(linebreak);
-        resultElement.prepend(event.results[i][0].transcript + '\n');
+        let textDiv = document.createElement('div');
+        textDiv.innerText = resultText;
+        textDiv.style.color = 'white';
+        resultElement.prepend(textDiv);
+
+        // add image
+        let img = document.createElement('img');
+        console.log('==== generating image');
+        img.style.height = '400px';
+        img.src =
+          'https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExZHFzMDFwdzh4dHYyMWEweHAwenE4Ym5pNGtodjhnbnpld3ZqendoeSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/VseXvvxwowwCc/giphy.gif';
+        resultElement.prepend(img);
+        const imageResponse = await generateImage(resultText);
+        console.log('==== imageResponse', imageResponse);
+        img.src = imageResponse.url;
+        isLoadingImage = false;
       }
     }
 
@@ -51,11 +88,13 @@ if (recognition) {
     console.log('Speech recognition ended');
   };
 } else {
+  isLoadingImage = false;
   console.error('Speech recognition not supported');
 }
 
 function startRecording() {
   resultElement.innerText = '';
+  isLoadingImage = false;
   recognition.start();
 }
 
