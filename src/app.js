@@ -21,14 +21,12 @@ if (recognition) {
     console.log('Recording started');
   };
 
-  recognition.onresult = function (event) {
-    let result = '';
+  let result = '';
 
+  recognition.onresult = function (event) {
     for (let i = event.resultIndex; i < event.results.length; i++) {
       if (event.results[i].isFinal) {
-        result += event.results[i][0].transcript + ' ';
-      } else {
-        result += event.results[i][0].transcript;
+        result = event.results[i][0].transcript + '\n' + result;
       }
     }
 
