@@ -7,6 +7,7 @@ startBtn.addEventListener('click', startRecording);
 stopBtn.addEventListener('click', stopRecording);
 
 let recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let linebreak = document.createElement('br');
 
 if (recognition) {
   recognition = new recognition();
@@ -21,16 +22,15 @@ if (recognition) {
     console.log('Recording started');
   };
 
-  let result = '';
-
   recognition.onresult = function (event) {
+    let result = '';
+
     for (let i = event.resultIndex; i < event.results.length; i++) {
       if (event.results[i].isFinal) {
-        result = event.results[i][0].transcript + '\n' + result;
+        resultElement.prepend(linebreak);
+        resultElement.prepend(event.results[i][0].transcript + '\n');
       }
     }
-
-    resultElement.innerText = result;
 
     if (result.toLowerCase().includes('stop recording')) {
       resultElement.innerText = result.replace(/stop recording/gi, '');
