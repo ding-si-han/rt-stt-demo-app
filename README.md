@@ -1,13 +1,13 @@
-# Real-time Speech-to-Text App Setup
+# Visualise.ai  
 
 Install dependencies
 
 ```bash
-yarn
+pnpm install
 ```
 
 Run the development server
 
 ```bash
-yarn dev
+pnpm dev
 ```
